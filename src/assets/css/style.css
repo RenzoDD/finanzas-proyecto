@@ -10,7 +10,7 @@
 }
 
 :root {
-    --HEADER: #50280B;
+    --HEADER: #004C93;
     --MENU-NORMAL: #693510;
     --MENU-HOVER: #5c2f0e;
     --MENU-FONT-NORMAL: #FFFFFF;
@@ -44,3 +44,4 @@ body {
     color: var(--MENU-FONT-HOVER) !important;
     background-color: var(--MENU-HOVER);
 }
+
