@@ -1,7 +1,7 @@
 <navbar class="navbar navbar-expand-md navbar-dark bg-dark header">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img src="/assets/img/original.png" height="50"> FinSmart
+                <img src="/assets/img/logo.jpg" height="50"> FinSmart
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

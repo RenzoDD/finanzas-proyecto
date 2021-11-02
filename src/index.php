@@ -8,12 +8,11 @@
 require_once "mvc-init.php";
 session_start();
 
-require_once __CONTROLLER__ . "/ClassController.php";
+require_once __CONTROLLER__ . "/ApplicacionController.php";
 
 if (route("/"))
 {
-    $class = new ClassController();
-    $class->Home();
+    ApplicacionController::Inicio();
 }
 
 ?>
