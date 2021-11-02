@@ -112,7 +112,7 @@ class FinanciamientoModel extends DatabaseModel
             {
                 $obj = new FinanciamientoModel();
                 $obj->FillData($obj, $row);
-                $A[$obj->ClassID] = $obj;
+                $A[$obj->FinanciamientoID] = $obj;
             }
 
             return $A;
