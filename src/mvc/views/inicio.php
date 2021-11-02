@@ -32,17 +32,16 @@
                         exercitation ullamco laboris nisi ut aliquip ex ea commodo 
                         consequat. Duis aute irure dolor in reprehenderit.
                         
-                     </h4>
-                    
-                </div>
-                <div class=" mb-3">
-							<!--ponen el .html al que quieren ir -->
-
-							<a href="registro.html"><input type="button" value="ir a login" class="btn btn-primary"></a>
+                    </h4>
 					</div>
-
-
-
+					<div class=" mb-3">
+							<a class="btn btn-success" href="/login">
+								Ir al login
+							</a>
+							<a class="btn btn-primary" href="/registro">
+								Registrarse
+							</a>
+					</div>
 				</div>
 
 				<div class="col-6 col-md-4">

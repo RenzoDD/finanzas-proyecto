@@ -11,7 +11,7 @@ class ApplicacionController
     {
         $pageName = "/inicio";
 
-        require __VIEW__ . "/registro.php";
+        require __VIEW__ . "/inicio.php";
     }
 }
 
