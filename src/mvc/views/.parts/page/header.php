@@ -29,8 +29,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="bi bi-power"></i> Salir
+                        <a class="nav-link active" aria-current="page" href="/login">
+                            <i class="bi bi-power"></i> 
+                            <?php 
+                                if (isset($_SESSION["EmpresaID"]))
+                                    echo "Salir";
+                                else
+                                    echo "Entrar";
+                            ?>
                         </a>
                     </li>
                 </ul>

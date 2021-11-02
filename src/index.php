@@ -23,5 +23,13 @@ else if (route("/registro/registrar"))
 {
     EmpresaController::Registrar($_POST["RazonSocial"], $_POST["Direccion"], $_POST["RUC"], $_POST["Clave"]);
 }
+else if (route("/login"))
+{
+    EmpresaController::Login();
+}
+else if (route("/login/validar"))
+{
+    EmpresaController::Validar($_POST["RUC"], $_POST["Clave"]);
+}
 
 ?>

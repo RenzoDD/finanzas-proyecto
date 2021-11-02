@@ -30,6 +30,33 @@ class EmpresaController
             return;
         }
     }
+
+
+    static function Login()
+    {
+        $pageName = "/login";
+
+        unset($_SESSION["EmpresaID"]);
+
+        require __VIEW__ . "/login.php";
+    }
+    static function Validar($RUC, $Clave)
+    {
+        $empresa = new EmpresaModel();
+        $empresa = $empresa->LeerRUCClave($RUC, $Clave);
+
+        if ($empresa != null)
+        {
+            $_SESSION["EmpresaID"] = $empresa->EmpresaID;
+            header("Location: /movimientos");
+            return;
+        }
+        else
+        {
+            header("Location: /login");
+            return;
+        }
+    }
 }
 
 ?>
