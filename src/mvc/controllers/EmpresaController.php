@@ -3,6 +3,7 @@
  * Copyright 2021 (c) Renzo Diaz
  * Licensed under MIT License
  * Empresa controller
+
  */
 
 require_once __MODEL__ . "/EmpresaModel.php";
@@ -48,7 +49,9 @@ class EmpresaController
         if ($empresa != null)
         {
             $_SESSION["EmpresaID"] = $empresa->EmpresaID;
-            header("Location: /movimientos");
+            header("Location: /registroDocumento");
+            //require __VIEW__ . "/registroDocumento.php";
+            //cambiando el location pq no hay funcion aqui pa registroDocumento
             return;
         }
         else

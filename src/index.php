@@ -10,6 +10,8 @@ session_start();
 
 require_once __CONTROLLER__ . "/ApplicacionController.php";
 require_once __CONTROLLER__ . "/EmpresaController.php";
+require_once __CONTROLLER__ . "/DocumentoController.php";
+
 
 if (route("/"))
 {
@@ -32,4 +34,13 @@ else if (route("/login/validar"))
     EmpresaController::Validar($_POST["RUC"], $_POST["Clave"]);
 }
 
-?>
+else if (route("/registroDocumento"))
+{
+    DocumentoController::RegistroDocumento();
+}
+else if (route("/registroDocumento/registrarDocumento"))
+{
+    DocumentoController::RegistrarDocumento($_POST["TipoDocumento"], $_POST["Emisor"], $_POST["FechaEmision"], $_POST["FechaPago"], $_POST["Moneda"], $_POST["Monto"]);
+}
+
+?> 

@@ -51,20 +51,19 @@ class DocumentoModel extends DatabaseModel
 			$destiny->EnFinanciamiento = $origin['EnFinanciamiento'];
 	}
 
-	public function Crear($EmpresaID, $TipoDocumento, $Emisor, $FechaEmision, $FechaPago, $Moneda, $Monto, $EnFinanciamiento)
+	public function Crear($EmpresaID, $TipoDocumento, $Emisor, $FechaEmision, $FechaPago, $Moneda, $Monto)
 	{
 		try
 		{
-			$query = $this->db->prepare("CALL Class_Create(:EmpresaID, :DocumentoID,:TipoDocumento, :Emisor, :FechaEmision, :FechaPago, :Moneda, :Monto, :EnFinanciamiento)");
+			$query = $this->db->prepare("CALL DOCUMENTOS_CREAR(:EmpresaID,:TipoDocumento, :Emisor, :FechaEmision, :FechaPago, :Moneda, :Monto)");
+			
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
-			$query->bindParam(":DocumentoID", $DocumentoID, PDO::PARAM_INT);
 			$query->bindParam(":TipoDocumento", $TipoDocumento, PDO::PARAM_STR);
 			$query->bindParam(":Emisor", $Emisor, PDO::PARAM_STR);
 			$query->bindParam(":FechaEmision", $FechaEmision, PDO::PARAM_STR);
 			$query->bindParam(":FechaPago", $FechaPago, PDO::PARAM_STR); 
 			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
 			$query->bindParam(":Monto", $Monto, PDO::PARAM_STR);
-			$query->bindParam(":EnFinanciamiento", $EnFinanciamiento, PDO::PARAM_STR);
 			
 			if (!$query->execute())
 				return false;
@@ -87,7 +86,7 @@ class DocumentoModel extends DatabaseModel
         try
         {
             $query = $this->db->prepare("CALL DOCUMENTOS_LEER_EMPRESA(:EmpresaID)");
-			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT); // CAMBIAR
+			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT); 
             
             if (!$query->execute())
                 return [];
