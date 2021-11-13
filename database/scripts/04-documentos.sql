@@ -80,3 +80,16 @@ BEGIN
 			AND D.EnFinanciamiento > 0
 	ORDER BY D.FechaEmision;
 END //
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_LEER_EMPRESA_MONEDA_RANGO //
+CREATE PROCEDURE DOCUMENTOS_LEER_EMPRESA_MONEDA_RANGO ( IN EmpresaID INTEGER, IN Moneda TEXT, IN Inicio DATE, IN Fin DATE)
+BEGIN
+    SELECT  D.*
+    FROM    DOCUMENTOS AS D
+    WHERE   D.EmpresaID = EmpresaID
+            AND D.Moneda = Moneda
+            AND D.FechaEmision >= Inicio
+            AND D.FechaEmision <= Fin;
+END //
+
+

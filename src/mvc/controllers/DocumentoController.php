@@ -30,7 +30,25 @@ class DocumentoController
             return;
         }
     }
-    
+
+    public static function ListaDeComitentes($moneda, $fechaInicio, $fechaFin)
+    {
+        $documento = new DocumentoModel();
+        $documentos=$documento->LeerEmpresaMonedaRango($_SESSION["EmpresaID"],$moneda,  $fechaInicio, $fechaFin);
+        $sumaCargos=0;
+        $sumaAbonos=0;
+        foreach ($documentos as $documento) {
+            if($documento->Monto<0)
+                $sumaCargos +=$documento->Monto;
+            else 
+                $sumaAbonos+=$documento->Monto;
+
+        } 
+      
+        
+        require __VIEW__ . "/comitentes.php";
+    }
+
 }
 
 ?>

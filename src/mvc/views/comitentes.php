@@ -17,36 +17,40 @@
 	<?php require __VIEW__ . "/.parts/page/header.php" ?>
 
 	<main class="container my-3">
-		<div class="row">
-			<div class="col">
-				<p>Tipo cambio: 4.1 </p>
-			</div>
-			<div class="col text-end">
-				<div class="dropdown show">
-					<a>Moneda:
-						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Selecciona Moneda
-						</a>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="#">PEN</a>
-							<a class="dropdown-item" href="#">USD</a>
+			<form>
+			<div class="row" style="padding: 2%;">
+				<div class="col">
+					<div class="form-group row mb-3" style=" align-items: center;">
+						<label for="exampleFormControlInput1" class="col-md-4 control-label">Tipo cambio: </label>
+						<div class="col-md-3">
+							<input type="text" class="form-control" id="exampleFormControlInput1" readonly value="4.1">
 						</div>
-					</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group row mb-3" style="justify-content: flex-end; align-items: center;">
+						<label class="col-md-2" for="selectbasic">Moneda</label>
+						<div class="col-md-4">
+							<select id="selectbasic" name="moneda" class="form-control" onchange="this.form.submit()">
+								<option value="PEN" <?php echo $moneda == "PEN" ? "selected" : "" ?>>PEN</option>
+								<option value="USD" <?php echo $moneda == "USD" ? "selected" : "" ?>>USD</option>
+							</select>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<br>
+			<h1 class="text-center">Movimiento de Comitentes del </h1>
+			<div class="row">
+				<div class="col-6" style="margin-bottom: 2%;">
+					<input type="date" name="fechaInicio" class="form-control" value="<?php echo $fechaInicio ?>" onchange="this.form.submit()">
+				</div>
+				<div class="col-6" style="margin-bottom: 2%;">
+					<input type="date" name="fechaFin" class="form-control" value="<?php echo $fechaFin ?>" onchange="this.form.submit()">
+				</div>
+			</div>
+		</form>
 
-		<div class="row text-center">
-			<h3>Movimiento de Comitentes del
-				<input type="date" id="date">
-				al
-				<input type="date" id="date">
-			</h3>
-		</div>
-
-		<br>
 
 		<div class="row">
 			<table class="table">
@@ -61,52 +65,28 @@
 
 				</thead>
 				<tbody>
+					<?php foreach($documentos as $documento): ?>
 					<tr>
-						<th scope="row">12/10/2020</th>
-						<td>Factura</td>
-						<td>Layconsa</td>
-						<td></td>
-						<td>25,000</td>
+						<th scope="row"><?php echo $documento->FechaEmision ?></th>
+						<td><?php echo $documento->TipoDocumento ?></td>
+						<td><?php echo $documento->Emisor ?></td>
+						<td><?php echo $documento->Monto < 0?$documento->Monto:"" ?></td>
+						<td><?php echo $documento->Monto> 0?$documento->Monto:"" ?></td>
+
 					</tr>
-					<tr>
-						<th scope="row">01/06/2021</th>
-						<td>Letra</td>
-						<td>Alpha</td>
-						<td></td>
-						<td>35,000</td>
-					</tr>
-					<tr>
-						<th scope="row">02/06/2021</th>
-						<td>Factura</td>
-						<td>Beta</td>
-						<td></td>
-						<td>20,000</td>
-					</tr>
-					<tr>
-						<th scope="row">03/07/2021</th>
-						<td>Recibo por Honorarios</td>
-						<td>Alicorp</td>
-						<td>60,000</td>
-						<td></td>
-					</tr>
-					<tr>
-						<th scope="row">14/08/2021</th>
-						<td>Factura</td>
-						<td>Faber Castell</td>
-						<td>35,000</td>
-						<td></td>
-					</tr>
+					<?php endforeach?>
 				</tbody>
 
 				<tfoot>
-					<tr>
-						<th scope="col"></th>
-						<th scope="col"></th>
-						<th scope="col">SubTotal</th>
-						<th scope="col">95,000</th>
-						<th scopre="col">80,000</th>
-					</tr>
-				</tfoot>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>Saldo Disponible</td>
+								<td><?php echo $sumaCargos ?></td>
+								<td><?php echo $sumaAbonos ?></td>
+							</tr>
+
+					</tfoot>
 			</table>
 		</div>
 

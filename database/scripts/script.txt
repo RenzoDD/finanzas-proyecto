@@ -1,0 +1,395 @@
+/*
+ * Copyright 2021 (c) Renzo Diaz
+ * 
+ * Script para crear una base de datos en servidor MySQL / MariaDB server
+ * URL: http://localhost/phpmyadmin/
+ */
+
+DROP DATABASE IF EXISTS finsmart;
+CREATE DATABASE IF NOT EXISTS finsmart;
+USE finsmart;/*
+ * Copyright 2021 (c) Renzo Diaz
+ * 
+ * Funciones de control básicas
+ * URL: http://localhost/phpmyadmin/
+ */
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS HashSalt //
+CREATE FUNCTION HashSalt (DATA TEXT, SALT TEXT) 
+RETURNS TEXT
+BEGIN
+	DECLARE result TEXT;
+	SET result = CAST(SHA2( CONCAT(DATA, SALT) , 256 ) AS CHAR);
+	RETURN result;
+END //
+
+DROP FUNCTION IF EXISTS Nonce //
+CREATE FUNCTION Nonce() 
+RETURNS TEXT
+BEGIN
+	RETURN MD5(CAST(FLOOR(RAND()*(999999999999)) AS CHAR));
+END ///*
+ * Copyright 2021 (c) Renzo Diaz
+ * 
+ * Tabla de empresas
+ * URL: http://localhost/phpmyadmin/
+ */
+ 
+DELIMITER //
+
+DROP TABLE IF EXISTS Empresas //
+CREATE TABLE Empresas (
+	EmpresaID 		INTEGER 	AUTO_INCREMENT,
+
+	Nombre			TEXT		NOT NULL,
+	Direccion		TEXT		NOT NULL,
+	RUC				TEXT		NOT NULL	UNIQUE,
+	Clave			TEXT		NOT NULL,
+	Salt			TEXT		NOT NULL,
+	
+	PRIMARY KEY (EmpresaID)
+) //
+
+DROP PROCEDURE IF EXISTS EMPRESAS_CREAR //
+CREATE PROCEDURE EMPRESAS_CREAR (IN Nombre TEXT, IN Direccion TEXT, IN RUC TEXT, IN Clave TEXT)
+BEGIN
+	SET @salt = Nonce();
+
+	INSERT INTO Empresas ( Nombre, Direccion, RUC, Clave, Salt )
+	VALUES 	( Nombre, Direccion, RUC, HashSalt( Clave, @salt ), @salt );
+
+	SELECT 	E.*
+	FROM 	Empresas AS E
+	WHERE 	E.Nombre = Nombre
+			AND E.Direccion = Direccion 
+			AND E.RUC = RUC 
+			AND E.Clave = HashSalt( Clave, E.Salt )
+			AND E.Salt = @salt ;
+END //
+
+DROP PROCEDURE IF EXISTS EMPRESAS_LEER_TODOS //
+CREATE PROCEDURE EMPRESAS_LEER_TODOS ( )
+BEGIN
+	SELECT 	E.*
+	FROM 	Empresas AS E;
+END //
+
+DROP PROCEDURE IF EXISTS EMPRESAS_LEER_ID //
+CREATE PROCEDURE EMPRESAS_LEER_ID (IN EmpresaID INTEGER)
+BEGIN
+	SELECT 	E.*
+	FROM 	Empresas AS E
+	WHERE 	E.EmpresaID = EmpresaID;
+END //
+
+DROP PROCEDURE IF EXISTS EMPRESAS_LEER_RUC_CLAVE //
+CREATE PROCEDURE EMPRESAS_LEER_RUC_CLAVE (IN RUC TEXT, IN Clave TEXT)
+BEGIN
+	SELECT 	E.*
+	FROM 	Empresas AS E
+	WHERE 	E.RUC = RUC
+			AND E.Clave = HashSalt( Clave, E.Salt );
+END ///*
+ * Copyright 2021 (c) Renzo Diaz
+ * 
+ * Tabla de documentos
+ * URL: http://localhost/phpmyadmin/
+ */
+ 
+DELIMITER //
+
+DROP TABLE IF EXISTS Documentos //
+CREATE TABLE Documentos (
+	DocumentoID			INTEGER			AUTO_INCREMENT,
+	
+    EmpresaID			INTEGER			NOT NULL,
+	TipoDocumento		TEXT			NOT NULL,  -- LETRA / FACTURA / RECIBO
+	Emisor				TEXT			NOT NULL,
+	FechaEmision		DATE			NOT NULL,
+	FechaVencimiento	DATE			NOT NULL,	
+	Moneda				TEXT			NOT NULL,  -- PEN / USD
+	Monto				DECIMAL(19,9)	NOT NULL,
+	EnFinanciamiento	DECIMAL(19,9)	NOT NULL DEFAULT 0,
+
+    PRIMARY KEY (DocumentoID),
+	FOREIGN KEY (EmpresaID)	REFERENCES EMPRESAS (EmpresaID)
+) //
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_CREAR //
+CREATE PROCEDURE DOCUMENTOS_CREAR (IN EmpresaID INTEGER, IN TipoDocumento TEXT, IN Emisor TEXT, IN FechaEmision DATE, IN FechaVencimiento DATE, IN Moneda TEXT, IN Monto DECIMAL(19,9))
+BEGIN
+	INSERT INTO Documentos (EmpresaID, TipoDocumento, Emisor, FechaEmision, FechaVencimiento, Moneda, Monto)
+	VALUES 	(EmpresaID, TipoDocumento, Emisor, FechaEmision, FechaVencimiento, Moneda, Monto);
+
+	SELECT 	D.*
+	FROM 	Documentos AS D
+	WHERE 	D.EmpresaID = EmpresaID
+			AND D.TipoDocumento = TipoDocumento
+			AND D.Emisor = Emisor
+			AND D.FechaEmision = FechaEmision
+			AND D.FechaVencimiento = FechaVencimiento
+			AND D.Moneda = Moneda
+			AND D.Monto = Monto;
+END //
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_LEER_EMPRESA //
+CREATE PROCEDURE DOCUMENTOS_LEER_EMPRESA (IN EmpresaID INTEGER)
+BEGIN
+	SELECT 	D.*
+	FROM 	Documentos AS D
+	WHERE	D.EmpresaID = EmpresaID
+	ORDER BY D.FechaEmision;
+END //
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_LEER_EMPRESA_MONEDA //
+CREATE PROCEDURE DOCUMENTOS_LEER_EMPRESA_MONEDA (IN EmpresaID INTEGER, IN Moneda TEXT)
+BEGIN
+	SELECT 	D.*
+	FROM 	Documentos AS D
+	WHERE	D.EmpresaID = EmpresaID
+			AND D.Moneda = Moneda
+	ORDER BY D.FechaEmision;
+END //
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_LEER_FINANCIAMIENTO_DISPONIBLE //
+CREATE PROCEDURE DOCUMENTOS_LEER_FINANCIAMIENTO_DISPONIBLE (IN EmpresaID INTEGER, IN FechaActual DATE)
+BEGIN
+	SELECT 	D.*
+	FROM 	Documentos AS D
+	WHERE	D.EmpresaID = EmpresaID
+			AND D.EnFinanciamiento < D.Monto
+			AND D.FechaVencimiento > FechaActual
+	ORDER BY D.FechaEmision;
+END //
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_LEER_CON_FINANCIAMIENTO //
+CREATE PROCEDURE DOCUMENTOS_LEER_CON_FINANCIAMIENTO (IN EmpresaID INTEGER, IN FechaActual DATE)
+BEGIN
+	SELECT 	D.*
+	FROM 	Documentos AS D
+	WHERE	D.EmpresaID = EmpresaID
+			AND D.EnFinanciamiento > 0
+	ORDER BY D.FechaEmision;
+END //
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_LEER_EMPRESA_MONEDA_RANGO //
+CREATE PROCEDURE DOCUMENTOS_LEER_EMPRESA_MONEDA_RANGO ( IN EmpresaID INTEGER, IN Moneda TEXT, IN Inicio DATE, IN Fin DATE)
+BEGIN
+    SELECT  D.*
+    FROM    DOCUMENTOS AS D
+    WHERE   D.EmpresaID = EmpresaID
+            AND D.Moneda = Moneda
+            AND D.FechaEmision >= Inicio
+            AND D.FechaEmision <= Fin;
+END //
+
+
+DROP PROCEDURE IF EXISTS DOCUMENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN //
+CREATE PROCEDURE DOCUMENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN ( IN EmpresaID INTEGER, IN Moneda TEXT, IN Inicio DATE, IN Fin DATE)
+BEGIN
+    SELECT  SUM(D.Monto) AS Monto
+    FROM    DOCUMENTOS AS D
+    WHERE   D.EmpresaID = EmpresaID
+            AND D.Moneda = Moneda
+			AND D.FechaEmision >= Inicio
+            AND D.FechaEmision <= Fin;
+END ///*
+ * Copyright 2021 (c) Renzo Diaz
+ * 
+ * Tabla de financiamientos
+ * URL: http://localhost/phpmyadmin/
+ */
+
+DELIMITER //
+
+DROP TABLE IF EXISTS Financiamientos //
+CREATE TABLE Financiamientos (
+	FinanciamientoID	INTEGER 	AUTO_INCREMENT,
+
+	EmpresaID			INTEGER			NOT NULL,
+
+    Fecha				DATE			NOT NULL,
+    Moneda				TEXT			NOT NULL, -- USD / PEN
+    TipoCambio			DECIMAL(19,9)	NOT NULL,
+    MontoBruto			DECIMAL(19,9)	NOT NULL,
+    MontoNeto			DECIMAL(19,9)	NOT NULL,
+    Comision			DECIMAL(19,9)	NOT NULL,
+	Tasa				DECIMAL(19,9)	NOT NULL,
+    TasaTipo			TEXT			NOT NULL, -- NOMINAL / EFECTIVA
+    TasaPeriodo			TEXT			NOT NULL, -- 
+    TasaCapitalizacion	TEXT			NOT NULL, -- 
+
+
+    PRIMARY KEY (FinanciamientoID),
+	FOREIGN KEY (EmpresaID)	REFERENCES EMPRESAS (EmpresaID)
+) //
+
+DROP PROCEDURE IF EXISTS FINANCIAMIENTOS_CREAR //
+CREATE PROCEDURE FINANCIAMIENTOS_CREAR (IN EmpresaID INTEGER, IN Fecha DATE, IN Moneda TEXT, IN TipoCambio DECIMAL(19,9), IN MontoBruto DECIMAL(19,9), IN MontoNeto DECIMAL(19,9), IN Comision DECIMAL(19,9), IN Tasa DECIMAL(19,9), IN TasaTipo TEXT, IN TasaPeriodo TEXT, IN TasaCapitalizacion TEXT )
+BEGIN
+	INSERT INTO Financiamientos (EmpresaID,Fecha,Moneda,TipoCambio,MontoBruto,MontoNeto,Comision,Tasa,TasaTipo,TasaPeriodo,TasaCapitalizacion)
+	VALUES 	(EmpresaID,Fecha,Moneda,TipoCambio,MontoBruto,MontoNeto,Comision,Tasa,TasaTipo,TasaPeriodo,TasaCapitalizacion);
+
+	SELECT 	F.*
+	FROM 	Financiamientos AS F
+	WHERE 	F.EmpresaID = EmpresaID
+			AND F.Fecha = Fecha 
+			AND F.Moneda = Moneda 
+			AND F.TipoCambio = TipoCambio 
+			AND F.MontoBruto = MontoBruto 
+			AND F.MontoNeto = MontoNeto 
+			AND F.Comision = Comision 
+			AND F.Tasa = Tasa 
+			AND F.TasaTipo = TasaTipo 
+			AND F.TasaPeriodo = TasaPeriodo 
+			AND F.TasaCapitalizacion = TasaCapitalizacion;
+END //
+
+DROP PROCEDURE IF EXISTS FINANCIAMIENTOS_LEER_EMPRESA //
+CREATE PROCEDURE FINANCIAMIENTOS_LEER_EMPRESA (IN EmpresaID INTEGER)
+BEGIN
+	SELECT 	F.*
+	FROM 	Financiamientos AS F
+	WHERE 	F.EmpresaID = EmpresaID;
+END ///*
+ * Copyright 2021 (c) Renzo Diaz
+ * 
+ * Tabla de documentos financiados
+ * URL: http://localhost/phpmyadmin/
+ */
+
+DELIMITER //
+
+DROP TABLE IF EXISTS DocumentosFinanciados //
+CREATE TABLE DocumentosFinanciados (
+	DocumentoID			INTEGER			NOT NULL,
+	FinanciamientoID	INTEGER			NOT NULL,
+
+    Moneda				TEXT			NOT NULL, -- USD / PEN
+    Monto			    DECIMAL(19,9)	NOT NULL,
+
+    PRIMARY KEY (DocumentoID, FinanciamientoID),
+	FOREIGN KEY (DocumentoID)	    REFERENCES DOCUMENTOS       (DocumentoID),
+	FOREIGN KEY (FinanciamientoID)	REFERENCES FINANCIAMIENTOS  (FinanciamientoID)
+) //
+
+
+DROP PROCEDURE IF EXISTS DOCUMENTOSFINANCIADOS_CREAR //
+CREATE PROCEDURE DOCUMENTOSFINANCIADOS_CREAR ( IN DocumentoID INTEGER, IN FinanciamientoID INTEGER, IN Moneda TEXT, IN Monto DECIMAL(19,9) )
+BEGIN
+	INSERT INTO DocumentosFinanciados (DocumentoID,FinanciamientoID,Moneda,Monto)
+	VALUES 	(DocumentoID,FinanciamientoID,Moneda,Monto);
+
+	SELECT 	DF.*
+	FROM 	DocumentosFinanciados AS DF
+	WHERE 	DF.DocumentoID = DocumentoID
+			AND DF.FinanciamientoID = FinanciamientoID 
+			AND DF.Moneda = Moneda 
+			AND DF.Moneda = Moneda 
+			AND DF.Monto = Monto;
+END //
+
+
+DROP PROCEDURE IF EXISTS DOCUMENTOSFINANCIADOS_LEER_FINANCIAMIENTO //
+CREATE PROCEDURE DOCUMENTOSFINANCIADOS_LEER_FINANCIAMIENTO ( IN FinanciamientoID INTEGER )
+BEGIN
+    SELECT  DF.*
+    FROM    DocumentosFinanciados AS DF
+    WHERE   DF.FinanciamientoID = FinanciamientoID;
+END //
+
+
+DROP PROCEDURE IF EXISTS DOCUMENTOSFINANCIADOS_LEER_DOCUMENTO //
+CREATE PROCEDURE DOCUMENTOSFINANCIADOS_LEER_DOCUMENTO ( IN DocumentoID INTEGER )
+BEGIN
+    SELECT  DF.*
+    FROM    DocumentosFinanciados AS DF
+    WHERE   DF.DocumentoID = DocumentoID;
+END ///*
+ * Copyright 2021 (c) Renzo Diaz
+ * 
+ * Tabla de movimientos
+ * URL: http://localhost/phpmyadmin/
+ */
+
+DELIMITER //
+
+DROP TABLE IF EXISTS Movimientos //
+CREATE TABLE Movimientos (
+	MovimientoID		INTEGER			NOT NULL,
+	
+    EmpresaID	        INTEGER			NOT NULL,
+    FinanciamientoID    INTEGER,
+
+    Fecha               DATE            NOT NULL,
+    Detalle             TEXT            NOT NULL,
+    Moneda				TEXT			NOT NULL, -- USD / PEN
+    Monto			    DECIMAL(19,9)	NOT NULL,
+
+    PRIMARY KEY (MovimientoID),
+	FOREIGN KEY (EmpresaID)	        REFERENCES EMPRESAS         (EmpresaID),
+	FOREIGN KEY (FinanciamientoID)	REFERENCES FINANCIAMIENTOS  (FinanciamientoID)
+) //
+
+DROP PROCEDURE IF EXISTS MOVIMIENTOS_CREAR //
+CREATE PROCEDURE MOVIMIENTOS_CREAR ( IN EmpresaID INTEGER, IN Fecha DATE, IN Detalle TEXT, IN Moneda TEXT, IN Monto DECIMAL(19,9) )
+BEGIN
+    INSERT INTO Movimientos (EmpresaID,Fecha,Detalle,Moneda,Monto)
+    VALUES  (EmpresaID,Fecha,Detalle,Moneda,Monto);
+
+    SELECT  M.*
+    FROM    Movimientos AS M
+    WHERE   M.EmpresaID = EmpresaID
+            AND M.Fecha = Fecha
+            AND M.Detalle = Detalle
+            AND M.Moneda = Moneda
+            AND M.Monto = Monto;
+END //
+
+DROP PROCEDURE IF EXISTS MOVIMIENTOS_CREAR_FINANCIAMIENTO //
+CREATE PROCEDURE MOVIMIENTOS_CREAR_FINANCIAMIENTO ( IN EmpresaID INTEGER, IN FinanciamientoID INTEGER, IN Fecha DATE, IN Detalle TEXT, IN Moneda TEXT, IN Monto DECIMAL(19,9) )
+BEGIN
+    INSERT INTO Movimientos (EmpresaID,FinanciamientoID,Fecha,Detalle,Moneda,Monto)
+    VALUES  (EmpresaID,FinanciamientoID,Fecha,Detalle,Moneda,Monto);
+
+    SELECT  M.*
+    FROM    Movimientos AS M
+    WHERE   M.EmpresaID = EmpresaID
+            AND M.FinanciamientoID = FinanciamientoID
+            AND M.Fecha = Fecha
+            AND M.Detalle = Detalle
+            AND M.Moneda = Moneda
+            AND M.Monto = Monto;
+END //
+
+DROP PROCEDURE IF EXISTS MOVIMIENTOS_LEER_EMPRESA_MONEDA //
+CREATE PROCEDURE MOVIMIENTOS_LEER_EMPRESA_MONEDA ( IN EmpresaID INTEGER, IN Moneda TEXT)
+BEGIN
+    SELECT  M.*
+    FROM    Movimientos AS M
+    WHERE   M.EmpresaID = EmpresaID
+            AND M.Moneda = Moneda;
+END //
+
+DROP PROCEDURE IF EXISTS MOVIMIENTOS_LEER_EMPRESA_MONEDA_RANGO //
+CREATE PROCEDURE MOVIMIENTOS_LEER_EMPRESA_MONEDA_RANGO ( IN EmpresaID INTEGER, IN Moneda TEXT, IN Inicio DATE, IN Fin DATE)
+BEGIN
+    SELECT  M.*
+    FROM    Movimientos AS M
+    WHERE   M.EmpresaID = EmpresaID
+            AND M.Moneda = Moneda
+            AND M.Fecha >= Inicio
+            AND M.Fecha <= Fin;
+END //
+
+DROP PROCEDURE IF EXISTS MOVIMIENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN //
+CREATE PROCEDURE MOVIMIENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN ( IN EmpresaID INTEGER, IN Moneda TEXT, IN Fin DATE)
+BEGIN
+    SELECT  SUM(M.Monto) AS Monto
+    FROM    Movimientos AS M
+    WHERE   M.EmpresaID = EmpresaID
+            AND M.Moneda = Moneda
+            AND M.Fecha < Fin;
+END //

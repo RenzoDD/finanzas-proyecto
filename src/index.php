@@ -43,4 +43,13 @@ else if (route("/registroDocumento/registrarDocumento"))
     DocumentoController::RegistrarDocumento($_POST["TipoDocumento"], $_POST["Emisor"], $_POST["FechaEmision"], $_POST["FechaPago"], $_POST["Moneda"], $_POST["Monto"]);
 }
 
+else if (route("/comitentes"))
+{
+    $_GET["moneda"] = !(isset( $_GET["moneda"]))?"PEN":$_GET["moneda"];
+    $_GET["fechaInicio"] = !(isset( $_GET["fechaInicio"]))?"2020-01-01":$_GET["fechaInicio"];
+    $_GET["fechaFin"] = !(isset( $_GET["fechaFin"]))?DateFormat("now","date"):$_GET["fechaFin"];
+    DocumentoController::ListaDeComitentes($_GET["moneda"],$_GET["fechaInicio"],$_GET["fechaFin"]);
+
+}
+
 ?> 

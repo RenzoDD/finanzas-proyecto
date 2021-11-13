@@ -188,6 +188,39 @@ class DocumentoModel extends DatabaseModel
         { return []; }
 	}
 
+
+	public function LeerEmpresaMonedaRango($EmpresaID,$Moneda,$Inicio,$Fin)
+	{
+		try
+		{
+			$query = $this->db->prepare("CALL DOCUMENTOS_LEER_EMPRESA_MONEDA_RANGO(:EmpresaID,:Moneda,:Inicio,:Fin)");
+			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
+			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
+			$query->bindParam(":Inicio", $Inicio, PDO::PARAM_STR);
+			$query->bindParam(":Fin", $Fin, PDO::PARAM_STR);
+
+			
+			if (!$query->execute())
+                return [];
+                
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+            $A = [];
+            foreach ($result as $row)
+            {
+                $obj = new DocumentoModel();
+                $obj->FillData($obj, $row);
+                $A[$obj->DocumentoID] = $obj;
+            }
+
+            return $A;
+        }
+        catch (Exception $e)
+        { return []; }
+	}
+
+
+
 }
 
 ?>
