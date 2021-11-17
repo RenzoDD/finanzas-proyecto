@@ -11,7 +11,7 @@ session_start();
 require_once __CONTROLLER__ . "/ApplicacionController.php";
 require_once __CONTROLLER__ . "/EmpresaController.php";
 require_once __CONTROLLER__ . "/DocumentoController.php";
-
+require_once __CONTROLLER__ . "/MovimientosController.php";
 
 if (route("/"))
 {
@@ -33,6 +33,13 @@ else if (route("/login/validar"))
 {
     EmpresaController::Validar($_POST["RUC"], $_POST["Clave"]);
 }
+else if (route("/movimientos"))
+{
+    $_GET["Moneda"] = !(isset( $_GET["Moneda"]))?"PEN":$_GET["Moneda"];
+    $_GET["fechaInicio"] = !(isset( $_GET["fechaInicio"]))?"2021-01-01":$_GET["fechaInicio"];
+    $_GET["fechaFin"] = !(isset( $_GET["fechaFin"]))?DateFormat("now","date"):$_GET["fechaFin"];
+    MovimientoController::MostrarMovimientosMonedaRango($_GET["Moneda"],$_GET["fechaInicio"],$_GET["fechaFin"]);
+}
 
 else if (route("/registroDocumento"))
 {
@@ -51,5 +58,3 @@ else if (route("/comitentes"))
     DocumentoController::ListaDeComitentes($_GET["moneda"],$_GET["fechaInicio"],$_GET["fechaFin"]);
 
 }
-
-?> 

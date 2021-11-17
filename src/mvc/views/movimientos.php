@@ -17,42 +17,47 @@
 	<?php require __VIEW__ . "/.parts/page/header.php" ?>
 
 	<main class="container my-3">
-		<div class="row" style="padding: 2%;">
-			<div class="col">
-				<div class="form-group row mb-3" style=" align-items: center;">
-					<label for="exampleFormControlInput1" class="col-md-4 control-label">Tipo cambio: </label>
-					<div class="col-md-3">
-						<input type="text" class="form-control" id="exampleFormControlInput1" readonly value="4.1">
+		<form>
+			<div class="row" style="padding: 2%;">
+				<div class="col">
+					<div class="form-group row mb-3" style=" align-items: center;">
+						<label for="exampleFormControlInput1" class="col-md-4 control-label">Tipo cambio: </label>
+						<div class="col-md-3">
+							<input type="text" class="form-control" id="exampleFormControlInput1" readonly value="4.1">
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group row mb-3" style="justify-content: flex-end; align-items: center;">
+						<label class="col-md-2" for="selectbasic">Moneda</label>
+						<div class="col-md-4">
+							<select id="selectbasic" name="Moneda" class="form-control" onchange="this.form.submit()">
+								<option value="PEN" <?php echo $Moneda == "PEN" ? "selected" : "" ?>>PEN</option>
+								<option value="USD" <?php echo $Moneda == "USD" ? "selected" : "" ?>>USD</option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col">
-				<div class="form-group row mb-3" style="justify-content: flex-end; align-items: center;">
-					<label class="col-md-2" for="selectbasic">Moneda</label>
-					<div class="col-md-4">
-						<select id="selectbasic" name="selectbasic" class="form-control">
-							<option value="1">Option one</option>
-							<option value="2">Option two</option>
-							<option value="3">Option three</option>
-						</select>
-					</div>
-				</div>
-			</div>
-		</div>
 
-		</div>
-		<div class="row">
-			<div class="col-12" style="margin-bottom: 2%;">
-				<h1 style="text-align:center">Estado de cuenta corriente MN al </h1>
+			<h1 class="text-center">Estado de cuenta corriente MN</h1>
+			<div class="row">
+				<div class="col-6" style="margin-bottom: 2%;">
+					<input type="date" name="fechaInicio" class="form-control" value="<?php echo $fechaInicio ?>" onchange="this.form.submit()">
+				</div>
+				<div class="col-6" style="margin-bottom: 2%;">
+					<input type="date" name="fechaFin" class="form-control" value="<?php echo $fechaFin ?>" onchange="this.form.submit()">
+				</div>
 			</div>
-		</div>
+		</form>
 
 		<div class="form-group row mb-2">
 			<label for="exampleFormControlInput1" class="col-md-2 control-label">Señores: </label>
 			<div class="col-md-4">
-				<input type="text" class="form-control" id="exampleFormControlInput1" readonly>
+				<?php echo $empresa->Nombre ?>
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="table-responsive">
 				<table class="table">
@@ -66,42 +71,33 @@
 							<th scope="col">Saldo</th>
 						</tr>
 					</thead>
-					<tfoot>
-						<tr>
-							<td></td>
-							<td> </td>
-							<td>Saldo Disponible</td>
-							<td>170000</td>
-							<td>210000</td>
-							<td>40.000</td>
-						</tr>
-					</tfoot>
 					<tbody>
-						<tr>
-							<td>22.07.2021</td>
-							<td> 01.07.2021</td>
-							<td>Factura Buenventura</td>
-							<td>-</td>
-							<td>50.000</td>
-							<td>50.000 </td>
-						</tr>
-						<tr>
-							<td>22.07.2021</td>
-							<td> 23.07.2021</td>
-							<td>Comisión Factoring</td>
-							<td>2500</td>
-							<td>-</td>
-							<td> 47.500 </td>
-						</tr>
-						<tr>
-							<td>22.07.2021</td>
-							<td> 01.07.2021</td>
-							<td>Factura Buenventura</td>
-							<td>-</td>
-							<td>50.000</td>
-							<td>50.000 </td>
-						</tr>
+
+						<?php foreach ($movimientos as $m) :	?>
+
+							<tr>
+								<td><?php echo $m->$MovimientoID ?></td>
+								<td><?php echo $m->$EmpresaID ?></td>
+								<td><?php echo $m->$Fecha ?></td>
+								<td><?php echo $m->$Detalle ?></td>
+								<td><?php echo $m->$Moneda ?></td>
+								<td><?php echo $m->$Monto ?></td>
+							</tr>
+
+						<?php endforeach	?>
 					</tbody>
+					<tfoot>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>Saldo Disponible</td>
+								<td></td>
+								<td></td>
+								<td><?php echo $sumaMovimientos ?></td>
+							</tr>
+
+					</tfoot>
+
 				</table>
 			</div>
 		</div>
