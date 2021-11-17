@@ -78,15 +78,21 @@
 				</tbody>
 
 				<tfoot>
-							<tr>
-								<td></td>
-								<td></td>
-								<td>Saldo Disponible</td>
-								<td><?php echo $sumaCargos ?></td>
-								<td><?php echo $sumaAbonos ?></td>
-							</tr>
-
-					</tfoot>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>Totales</td>
+						<td><?php echo $sumaCargos ?></td>
+						<td><?php echo $sumaAbonos ?></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>Saldo Disponible</td>
+						<td><?php echo ($sumaAbonos + $sumaCargos )?></td>
+						<td></td>
+					</tr>		
+				</tfoot>
 			</table>
 		</div>
 		<div class="text-end">
