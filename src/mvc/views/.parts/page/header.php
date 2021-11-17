@@ -9,18 +9,13 @@
             <div class="collapse navbar-collapse text-center" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="/comitentes">
                             <i class="bi bi-arrow-left-right"></i> Movimiento de Comitentes
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="/movimientos">
                             <i class="bi bi-journal-text"></i></i> Estado de Cuenta Corriente
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="bi bi-wallet2"></i> Cartera
                         </a>
                     </li>
                     <li class="nav-item">

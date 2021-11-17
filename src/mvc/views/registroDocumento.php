@@ -53,8 +53,8 @@
 							<div class="col">
 								<label>Moneda</label>
 							<select name="Moneda">
-								<option value="Sol">Sol</option>
-								<option value="Dolar">Dolar</option>
+								<option value="PEN">Sol</option>
+								<option value="USD">Dolar</option>
 							</select>
 							</div>
 							<div class="col">

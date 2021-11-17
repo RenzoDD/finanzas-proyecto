@@ -89,7 +89,9 @@
 					</tfoot>
 			</table>
 		</div>
-
+		<div class="text-end">
+			<a href="/registroDocumento" class="btn btn-primary">Agregar Documento</a>
+		</div>
 	</main>
 
 
