@@ -12,6 +12,7 @@ require_once __CONTROLLER__ . "/ApplicacionController.php";
 require_once __CONTROLLER__ . "/EmpresaController.php";
 require_once __CONTROLLER__ . "/DocumentoController.php";
 require_once __CONTROLLER__ . "/MovimientosController.php";
+require_once __CONTROLLER__ . "/CarteraController.php";
 
 if (route("/"))
 {
@@ -58,3 +59,8 @@ else if (route("/comitentes"))
     DocumentoController::ListaDeComitentes($_GET["moneda"],$_GET["fechaInicio"],$_GET["fechaFin"]);
 
 }
+elseif(route("/cartera")){
+    $_GET["moneda"] = !(isset( $_GET["moneda"]))?"PEN":$_GET["moneda"];
+    CarteraController::MostrarCartera($_GET["moneda"]);
+}
+?>

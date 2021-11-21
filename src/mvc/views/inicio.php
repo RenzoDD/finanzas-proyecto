@@ -25,14 +25,13 @@
 					<div class="mb-3">
 						<h1 ">¡Bienvenido a FinSmart</h1>
                     <br><br>
-                    <h4 >¡Bienvenido a FinSmart!
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore 
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                        exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-                        consequat. Duis aute irure dolor in reprehenderit.
+                    <h4 >Una aplicacion en donde la gestión y el financiamiento de documentos 
+						se da de una forma rápida, sencilla y flexible.
+						Con FinSmart, tu información información financiera tendrá
+						una mejor organizacion y fácil acceso. 
                         
                     </h4>
+					<br><br>
 					</div>
 					<div class=" mb-3">
 							<a class="btn btn-success" href="/login">
