@@ -20,26 +20,27 @@
 		<h1 style="text-align:center">Registro</h1>
 		<div class="row">
 			<div class="col">
-				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">Razón Social</label>
-					<input type="text" class="form-control" id="exampleFormControlInput1">
-				</div>
-				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">Dirección</label>
-					<input type="text" class="form-control" id="exampleFormControlInput1">
-				</div>
-				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">RUC</label>
-					<input type="text" class="form-control" id="exampleFormControlInput1">
-				</div>
-				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">Contraseña</label>
-					<input type="text" class="form-control" id="exampleFormControlInput1">
-				</div>
-
-				<div class="mb-3" style="display: flex; justify-content: center; margin: 30px;">
-					<button type="button" class="btn btn-primary">Regístrate</button>
-				</div>
+				<form action="/registro/registrar" method="POST">
+					<div class="mb-3">
+						<label>Razón Social</label>
+						<input type="text" class="form-control" name="RazonSocial">
+					</div>
+					<div class="mb-3">
+						<label>Dirección</label>
+						<input type="text" class="form-control" name="Direccion">
+					</div>
+					<div class="mb-3">
+						<label>RUC</label>
+						<input type="number" class="form-control" name="RUC">
+					</div>
+					<div class="mb-3">
+						<label for="exampleFormControlInput1" class="form-label">Contraseña</label>
+						<input type="password" class="form-control" name="Clave">
+					</div>
+					<div class="mb-3 text-center">
+					<input type="submit" class="btn btn-primary" value="Registrarse">
+					</div>
+				</form>
 			</div>
 			<div class="col">
 				<div class="mb-3">

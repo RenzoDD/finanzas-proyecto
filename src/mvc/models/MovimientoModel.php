@@ -26,12 +26,12 @@ class MovimientoModel extends DatabaseModel
 
 		if (isset($origin['EmpresaID']))
 			$destiny->EmpresaID = $origin['EmpresaID'];
+
+		if (isset($origin['FinanciamientoID']))  
+			$destiny->FinanciamientoID = $origin['FinanciamientoID'];
 			
 		if (isset($origin['Fecha']))  
 			$destiny->Fecha = $origin['Fecha'];
-		
-		if (isset($origin['Detalle']))  
-			$destiny->Detalle = $origin['Detalle'];
 		
 		if (isset($origin['Detalle']))  
 			$destiny->Detalle = $origin['Detalle'];
@@ -74,7 +74,7 @@ class MovimientoModel extends DatabaseModel
 	{
 		try
 		{
-			$query = $this->db->prepare("CALL MOVIMIENTOS_CREAR_FINANCIAMIENTO (:EmpresaID,:FinanciamientoID,:Fecha,:Detalle,:Moneda,:Monto)");
+			$query = $this->db->prepare("CALL MOVIMIENTOS_CREAR_FINANCIAMIENTO(:EmpresaID,:FinanciamientoID,:Fecha,:Detalle,:Moneda,:Monto)");
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
 			$query->bindParam(":FinanciamientoID", $FinanciamientoID, PDO::PARAM_INT);
 			$query->bindParam(":Fecha", $Fecha, PDO::PARAM_STR);
@@ -103,7 +103,7 @@ class MovimientoModel extends DatabaseModel
 	{
 		try
 		{
-			$query = $this->db->prepare("CALL MOVIMIENTOS_LEER_EMPRESA_MONEDA:EmpresaID,:Moneda)");
+			$query = $this->db->prepare("CALL MOVIMIENTOS_LEER_EMPRESA_MONEDA(:EmpresaID,:Moneda)");
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
 			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
 			
@@ -133,11 +133,11 @@ class MovimientoModel extends DatabaseModel
 	{
 		try
 		{
-			$query = $this->db->prepare("CALL MOVIMIENTOS_LEER_EMPRESA_MONEDA_RANGO :EmpresaID,:Moneda,:Inicio,:Fin)");
+			$query = $this->db->prepare("CALL MOVIMIENTOS_LEER_EMPRESA_MONEDA_RANGO(:EmpresaID,:Moneda,:Inicio,:Fin)");
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
 			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
-			$query->bindParam(":Fecha", $Inicio, PDO::PARAM_STR);
-			$query->bindParam(":Fecha", $Fin, PDO::PARAM_STR);
+			$query->bindParam(":Inicio", $Inicio, PDO::PARAM_STR);
+			$query->bindParam(":Fin", $Fin, PDO::PARAM_STR);
 			
 			if (!$query->execute())
 				return [];
@@ -165,18 +165,18 @@ class MovimientoModel extends DatabaseModel
 	{
 		try
 		{
-			$query = $this->db->prepare("CALL MOVIMIENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN :EmpresaID,:Moneda,:Fin)");
+			$query = $this->db->prepare("CALL MOVIMIENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN(:EmpresaID,:Moneda,:Fin)");
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
 			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
-			$query->bindParam(":Fecha", $Fin, PDO::PARAM_DATE);
+			$query->bindParam(":Fin", $Fin, PDO::PARAM_STR);
 			
 			if (!$query->execute())
-				return -1;
+				return -2;
 				
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			
 			if (sizeof($result) == 0)
-				return -1;
+				return 0;
 			
 			return $result[0]['Monto'];
 		
@@ -185,6 +185,6 @@ class MovimientoModel extends DatabaseModel
 		{ return -1; }
 	}
 
-
+}
 
 ?>

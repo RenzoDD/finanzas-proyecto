@@ -18,49 +18,29 @@
 
 	<main class="container my-3">
 
-
-		<div class="container">
-			<div class="row justify-content-md-center">
-				<div class="col-md-8 ">
+		<div class="row">
+			<div class="col">
+				<h1 class="h3 font-weight-normal">Ingresa a FinSmart</h1>
+				<p>Por favor, llena tus datos.</p>
+				<form action="/login/validar" method="post">
 					<div class="mb-3">
-						<h1 ">¡Bienvenido a FinSmart</h1>
-                    <br><br>
-                    <h4 >¡Bienvenido a FinSmart!
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore 
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                        exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-                        consequat. Duis aute irure dolor in reprehenderit.
-                        
-                     </h4>
-                    
-                </div>
-                <div class=" mb-3">
-							<!--ponen el .html al que quieren ir -->
-
-							<a href="registro.html"><input type="button" value="ir a login" class="btn btn-primary"></a>
+						<label>RUC</label>
+						<input type="text" class="form-control" name="RUC" placeholder="Ingresa el RUC">
 					</div>
 
-
-
-				</div>
-
-				<div class="col-6 col-md-4">
 					<div class="mb-3">
-						<a class="navbar-brand" href="/">
-							<img src="/assets/img/imghombre1.jpg">
-						</a>
+						<label>Contraseña</label>
+						<input type="password" class="form-control" name="Clave" placeholder="Escribe tu contraseña">
 					</div>
-				</div>
 
+					<button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+				</form>
+			</div>
+			<div class="col">
+				<img class="rounded mx-auto d-block" src="/assets/img/login.png" height="500">
 			</div>
 		</div>
-
-
-
 	</main>
-
-
 
 	<?php require __VIEW__ . "/.parts/page/footer.php" ?>
 

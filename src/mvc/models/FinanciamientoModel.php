@@ -16,11 +16,14 @@ class FinanciamientoModel extends DatabaseModel
 	public $TipoCambio;
 	public $MontoBruto;
 	public $MontoNeto;
-	public $Comision;
+	public $GastosIniciales;
+	public $GastosFinales;
 	public $Tasa;
 	public $TasaTipo;
 	public $TasaPeriodo;
 	public $TasaCapitalizacion;
+	public $Comision;
+	public $TCEA;
 
 
 	private function FillData($destiny, $origin)
@@ -46,8 +49,11 @@ class FinanciamientoModel extends DatabaseModel
 		if (isset($origin['MontoNeto']))
 			$destiny->MontoNeto = $origin['MontoNeto'];
 
-		if (isset($origin['Comision']))
-			$destiny->Comision = $origin['Comision'];
+		if (isset($origin['GastosIniciales']))
+			$destiny->GastosIniciales = $origin['GastosIniciales'];
+
+		if (isset($origin['GastosFinales']))
+			$destiny->GastosFinales = $origin['GastosFinales'];
 
 		if (isset($origin['Tasa']))
 			$destiny->Tasa = $origin['Tasa'];
@@ -60,23 +66,32 @@ class FinanciamientoModel extends DatabaseModel
 
 		if (isset($origin['TasaCapitalizacion']))
 			$destiny->TasaCapitalizacion = $origin['TasaCapitalizacion'];
+
+		if (isset($origin['Comision']))
+			$destiny->Comision = $origin['Comision'];
+
+		if (isset($origin['TCEA']))
+			$destiny->TCEA = $origin['TCEA'];
 	}
 
-	public function Crear($EmpresaID, $Fecha, $Moneda,$TipoCambio, $MontoBruto, $MontoNeto, $Comision,$Tasa, $TasaTipo, $TasaPeriodo, $TasaCapitalizacion)
+	public function Crear($EmpresaID, $Fecha, $Moneda,$TipoCambio, $MontoBruto, $MontoNeto, $GastosIniciales, $GastosFinales, $Comision,$Tasa, $TasaTipo, $TasaPeriodo, $TasaCapitalizacion, $TCEA)
 	{
 		try {
-			$query = $this->db->prepare("CALL FINANCIAMIENTO_CREAR(:EmpresaID,:Fecha,:Moneda,:TipoCambio,:MontoBruto,:MontoNeto,:Comision,:Tasa,:TasaTipo,:TasaPeriodo,:TasaCapitalizacion)");
+			$query = $this->db->prepare("CALL FINANCIAMIENTOS_CREAR(:EmpresaID,:Fecha,:Moneda,:TipoCambio,:MontoBruto,:MontoNeto,:GastosIniciales,:GastosFinales,:Comision,:Tasa,:TasaTipo,:TasaPeriodo,:TasaCapitalizacion,:TCEA)");
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
 			$query->bindParam(":Fecha", $Fecha, PDO::PARAM_STR);
 			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
 			$query->bindParam(":TipoCambio", $TipoCambio, PDO::PARAM_STR);
 			$query->bindParam(":MontoBruto", $MontoBruto, PDO::PARAM_STR);
 			$query->bindParam(":MontoNeto", $MontoNeto, PDO::PARAM_STR);
+			$query->bindParam(":GastosIniciales", $GastosIniciales, PDO::PARAM_STR);
+			$query->bindParam(":GastosFinales", $GastosFinales, PDO::PARAM_STR);
 			$query->bindParam(":Comision", $Comision, PDO::PARAM_STR);
 			$query->bindParam(":Tasa", $Tasa, PDO::PARAM_STR);
 			$query->bindParam(":TasaTipo", $TasaTipo, PDO::PARAM_STR);
 			$query->bindParam(":TasaPeriodo", $TasaPeriodo, PDO::PARAM_STR);
 			$query->bindParam(":TasaCapitalizacion", $TasaCapitalizacion, PDO::PARAM_STR);
+			$query->bindParam(":TCEA", $TCEA, PDO::PARAM_STR);
 
 			if (!$query->execute())
 				return false;
@@ -112,7 +127,7 @@ class FinanciamientoModel extends DatabaseModel
             {
                 $obj = new FinanciamientoModel();
                 $obj->FillData($obj, $row);
-                $A[$obj->ClassID] = $obj;
+                $A[$obj->FinanciamientoID] = $obj;
             }
 
             return $A;
@@ -120,7 +135,4 @@ class FinanciamientoModel extends DatabaseModel
         catch (Exception $e)
         { return []; }
     }
-
-
-	
 }

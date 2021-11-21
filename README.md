@@ -14,7 +14,7 @@ Aplicación Web que permitirá administrar una cartera de descuento de facturas/
 
 ## Programadores ✒️
 
-* **U201810780** - Renzo Diaz - [RenzoDD2001](https://github.com/RenzoDD2001) - BackEnd
+* **U201810780** - Renzo Diaz - [RenzoDD](https://github.com/RenzoDD) - BackEnd
 * **U201912722** - Alvaro Cabrera - [Alvaro24mrz](https://github.com/Alvaro24mrz) - BackEnd
 * **U201911485** - Natalia Villanueva - [Natalia020302](https://github.com/Natalia020302) - BackEnd
 * **U201914540** - Flavia Pardo - [Pardito123](https://github.com/Pardito123) - FrontEnd
