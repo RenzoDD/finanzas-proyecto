@@ -19,6 +19,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/cartera">
+                            <i class="bi bi-wallet2"></i> Cartera
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/financiar">
                             <i class="bi bi-percent"></i> Financiar
                         </a>

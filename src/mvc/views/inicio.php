@@ -28,6 +28,7 @@
                     <h4>
 						FinSmart es una aplicación que tiene el objetivo de ayudar a las empresas a guardar un registro de sus documentos financieros. Podrás ver los movimientos financieros que se realizaron, la cartera de documentos, y hacer el cálculo de la TCEA de los documentos que elija y según los parámetros que ingrese. 
                     </h4>
+					<br><br>
 					</div>
 					<div class=" mb-3">
 							<a class="btn btn-success" href="/login">

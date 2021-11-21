@@ -15,6 +15,7 @@ require_once __CONTROLLER__ . "/EmpresaController.php";
 require_once __CONTROLLER__ . "/DocumentoController.php";
 require_once __CONTROLLER__ . "/MovimientosController.php";
 require_once __CONTROLLER__ . "/FinanciamientoController.php";
+require_once __CONTROLLER__ . "/CarteraController.php";
 
 if (route("/"))
 {
@@ -67,3 +68,8 @@ else if (route("/financiar/guardar"))
 {
     FinanciamientoController::GuardarDatos();
 }
+elseif(route("/cartera")){
+    $_GET["moneda"] = !(isset( $_GET["moneda"]))?"PEN":$_GET["moneda"];
+    CarteraController::MostrarCartera($_GET["moneda"]);
+}
+?>
