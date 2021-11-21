@@ -19,8 +19,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <i class="bi bi-percent"></i> Descuento
+                        <a class="nav-link active" aria-current="page" href="/financiar">
+                            <i class="bi bi-percent"></i> Financiar
                         </a>
                     </li>
                     <li class="nav-item">

@@ -64,7 +64,6 @@
 					<thead>
 						<tr>
 							<th scope="col">Fecha</th>
-							<th scope="col">Fecha Valor</th>
 							<th scope="col">Descripción</th>
 							<th scope="col">Cargo</th>
 							<th scope="col">Abono</th>
@@ -76,22 +75,20 @@
 						<?php foreach ($movimientos as $m) :	?>
 
 							<tr>
-								<td><?php echo $m->$MovimientoID ?></td>
-								<td><?php echo $m->$EmpresaID ?></td>
-								<td><?php echo $m->$Fecha ?></td>
-								<td><?php echo $m->$Detalle ?></td>
-								<td><?php echo $m->$Moneda ?></td>
-								<td><?php echo $m->$Monto ?></td>
+								<td><?php echo $m->Fecha ?></td>
+								<td><?php echo $m->Detalle ?></td>
+								<td><?php echo $m->Moneda ?></td>
+								<td>-</td>
+								<td><?php echo $m->Monto ?></td>
 							</tr>
 
-						<?php endforeach	?>
+						<?php endforeach ?>
 					</tbody>
 					<tfoot>
 							<tr>
 								<td></td>
 								<td></td>
 								<td>Saldo Disponible</td>
-								<td></td>
 								<td></td>
 								<td><?php echo $sumaMovimientos ?></td>
 							</tr>

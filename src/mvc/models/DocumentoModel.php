@@ -16,7 +16,7 @@ class DocumentoModel extends DatabaseModel
     public $TipoDocumento;
     public $Emisor;
     public $FechaEmision;
-	public $FechaPago;
+	public $FechaVencimiento;
 	public $Moneda;
 	public $Monto;
 	public $EnFinanciamiento;
@@ -38,30 +38,30 @@ class DocumentoModel extends DatabaseModel
 		if (isset($origin['FechaEmision']))  
 			$destiny->FechaEmision = $origin['FechaEmision'];
 
-		if (isset($origin['FechaPago']))  
-			$destiny->FechaPago = $origin['FechaPago'];
+		if (isset($origin['FechaVencimiento']))  
+			$destiny->FechaVencimiento = $origin['FechaVencimiento'];
 
 		if (isset($origin['Moneda']))  
 			$destiny->Moneda = $origin['Moneda'];
 
 		if (isset($origin['Monto']))  
-			$destiny->Monto = $origin['Monto'];
+			$destiny->Monto = floatval( $origin['Monto'] );
 
 		if (isset($origin['EnFinanciamiento']))  
-			$destiny->EnFinanciamiento = $origin['EnFinanciamiento'];
+			$destiny->EnFinanciamiento = floatval( $origin['EnFinanciamiento'] );
 	}
 
-	public function Crear($EmpresaID, $TipoDocumento, $Emisor, $FechaEmision, $FechaPago, $Moneda, $Monto)
+	public function Crear($EmpresaID, $TipoDocumento, $Emisor, $FechaEmision, $FechaVencimiento, $Moneda, $Monto)
 	{
 		try
 		{
-			$query = $this->db->prepare("CALL DOCUMENTOS_CREAR(:EmpresaID,:TipoDocumento, :Emisor, :FechaEmision, :FechaPago, :Moneda, :Monto)");
+			$query = $this->db->prepare("CALL DOCUMENTOS_CREAR(:EmpresaID,:TipoDocumento, :Emisor, :FechaEmision, :FechaVencimiento, :Moneda, :Monto)");
 			
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
 			$query->bindParam(":TipoDocumento", $TipoDocumento, PDO::PARAM_STR);
 			$query->bindParam(":Emisor", $Emisor, PDO::PARAM_STR);
 			$query->bindParam(":FechaEmision", $FechaEmision, PDO::PARAM_STR);
-			$query->bindParam(":FechaPago", $FechaPago, PDO::PARAM_STR); 
+			$query->bindParam(":FechaVencimiento", $FechaVencimiento, PDO::PARAM_STR); 
 			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
 			$query->bindParam(":Monto", $Monto, PDO::PARAM_STR);
 			
@@ -80,6 +80,30 @@ class DocumentoModel extends DatabaseModel
 		catch (Exception $e)
 		{ return false; }
 	}
+
+    public function ModificarAgregarFinanciamiento($DocumentoID, $Monto)
+    {
+        try
+        {
+            $query = $this->db->prepare("CALL DOCUMENTOS_MODIFICAR_AGREGAR_FINANCIAMIENTO(:DocumentoID,:Monto)");
+			$query->bindParam(":DocumentoID", $DocumentoID, PDO::PARAM_INT); 
+			$query->bindParam(":Monto", $Monto, PDO::PARAM_STR); 
+            
+            if (!$query->execute())
+                return false;
+                
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+			if (sizeof($result) == 0)
+				return false;
+
+            $this->FillData($this, $result[0]);
+
+            return true;
+        }
+        catch (Exception $e)
+        { return false; }
+    }
 
     public function LeerEmpresaID($EmpresaID)
     {
@@ -218,7 +242,10 @@ class DocumentoModel extends DatabaseModel
         catch (Exception $e)
         { return []; }
 	}
-
+	function DiasVencimiento()
+	{
+		return ceil((DateFormat($this->FechaVencimiento, "unix") - DateFormat("now", "unix")) / (60 * 60 * 24));
+	}
 
 
 }

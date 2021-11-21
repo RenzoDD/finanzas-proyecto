@@ -45,7 +45,7 @@
 
 					<div class="mb-3">
 						<label >Fecha de pago</label>
-						<input type="date" name="FechaPago"></input>
+						<input type="date" name="FechaVencimiento"></input>
 					</div>
 
 					<div class="mb-3">

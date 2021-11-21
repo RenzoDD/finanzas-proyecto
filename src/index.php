@@ -8,10 +8,13 @@
 require_once "mvc-init.php";
 session_start();
 
+define("CAMBIO", 4.01);
+
 require_once __CONTROLLER__ . "/ApplicacionController.php";
 require_once __CONTROLLER__ . "/EmpresaController.php";
 require_once __CONTROLLER__ . "/DocumentoController.php";
 require_once __CONTROLLER__ . "/MovimientosController.php";
+require_once __CONTROLLER__ . "/FinanciamientoController.php";
 
 if (route("/"))
 {
@@ -40,16 +43,14 @@ else if (route("/movimientos"))
     $_GET["fechaFin"] = !(isset( $_GET["fechaFin"]))?DateFormat("now","date"):$_GET["fechaFin"];
     MovimientoController::MostrarMovimientosMonedaRango($_GET["Moneda"],$_GET["fechaInicio"],$_GET["fechaFin"]);
 }
-
 else if (route("/registroDocumento"))
 {
     DocumentoController::RegistroDocumento();
 }
 else if (route("/registroDocumento/registrarDocumento"))
 {
-    DocumentoController::RegistrarDocumento($_POST["TipoDocumento"], $_POST["Emisor"], $_POST["FechaEmision"], $_POST["FechaPago"], $_POST["Moneda"], $_POST["Monto"]);
+    DocumentoController::RegistrarDocumento($_POST["TipoDocumento"], $_POST["Emisor"], $_POST["FechaEmision"], $_POST["FechaVencimiento"], $_POST["Moneda"], $_POST["Monto"]);
 }
-
 else if (route("/comitentes"))
 {
     $_GET["moneda"] = !(isset( $_GET["moneda"]))?"PEN":$_GET["moneda"];
@@ -57,4 +58,12 @@ else if (route("/comitentes"))
     $_GET["fechaFin"] = !(isset( $_GET["fechaFin"]))?DateFormat("now","date"):$_GET["fechaFin"];
     DocumentoController::ListaDeComitentes($_GET["moneda"],$_GET["fechaInicio"],$_GET["fechaFin"]);
 
+}
+else if (route("/financiar"))
+{
+    FinanciamientoController::Financiar();
+}
+else if (route("/financiar/guardar"))
+{
+    FinanciamientoController::GuardarDatos();
 }

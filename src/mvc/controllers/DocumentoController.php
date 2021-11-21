@@ -16,10 +16,10 @@ class DocumentoController
         require __VIEW__ . "/registroDocumento.php";
     }
 
-    static function RegistrarDocumento($TipoDocumento, $Emisor, $FechaEmision, $FechaPago, $Moneda, $Monto)
+    static function RegistrarDocumento($TipoDocumento, $Emisor, $FechaEmision, $FechaVencimiento, $Moneda, $Monto)
     {
         $documento = new DocumentoModel();
-        if ($documento->Crear($_SESSION["EmpresaID"], $TipoDocumento, $Emisor, $FechaEmision, $FechaPago, $Moneda, $Monto))
+        if ($documento->Crear($_SESSION["EmpresaID"], $TipoDocumento, $Emisor, $FechaEmision, $FechaVencimiento, $Moneda, $Monto))
         {
             header("Location: /registroDocumento");
             return;

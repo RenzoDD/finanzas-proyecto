@@ -136,8 +136,8 @@ class MovimientoModel extends DatabaseModel
 			$query = $this->db->prepare("CALL MOVIMIENTOS_LEER_EMPRESA_MONEDA_RANGO(:EmpresaID,:Moneda,:Inicio,:Fin)");
 			$query->bindParam(":EmpresaID", $EmpresaID, PDO::PARAM_INT);
 			$query->bindParam(":Moneda", $Moneda, PDO::PARAM_STR);
-			$query->bindParam(":Fecha", $Inicio, PDO::PARAM_STR);
-			$query->bindParam(":Fecha", $Fin, PDO::PARAM_STR);
+			$query->bindParam(":Inicio", $Inicio, PDO::PARAM_STR);
+			$query->bindParam(":Fin", $Fin, PDO::PARAM_STR);
 			
 			if (!$query->execute())
 				return [];
