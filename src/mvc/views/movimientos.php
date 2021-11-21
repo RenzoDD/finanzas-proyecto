@@ -72,14 +72,20 @@
 					</thead>
 					<tbody>
 
-						<?php foreach ($movimientos as $m) :	?>
+						<?php foreach ($documentosGeneral as $m) :	?>
 
 							<tr>
+								<th scope="row"><?php echo $documentosGeneral->FechaEmision ?></th>
 								<td><?php echo $m->Fecha ?></td>
 								<td><?php echo $m->Detalle ?></td>
 								<td><?php echo $m->Moneda ?></td>
+								<?php if($m->Monto > 0): ?>
 								<td>-</td>
 								<td><?php echo $m->Monto ?></td>
+								<?php else: ?>
+								<td><?php echo $m->Monto ?></td>
+								<td>-</td>
+								<?php endif ?>
 							</tr>
 
 						<?php endforeach ?>
@@ -87,9 +93,9 @@
 					<tfoot>
 							<tr>
 								<td></td>
-								<td></td>
 								<td>Saldo Disponible</td>
-								<td></td>
+								<td><?php echo $sumaCargos ?></td>
+								<td><?php echo $sumaAbonos ?></td></td>
 								<td><?php echo $sumaMovimientos ?></td>
 							</tr>
 
