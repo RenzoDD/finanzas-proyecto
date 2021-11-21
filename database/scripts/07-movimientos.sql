@@ -9,7 +9,7 @@ DELIMITER //
 
 DROP TABLE IF EXISTS Movimientos //
 CREATE TABLE Movimientos (
-	MovimientoID		INTEGER			NOT NULL,
+	MovimientoID		INTEGER			NOT NULL    AUTO_INCREMENT,
 	
     EmpresaID	        INTEGER			NOT NULL,
     FinanciamientoID    INTEGER,
@@ -78,9 +78,9 @@ END //
 DROP PROCEDURE IF EXISTS MOVIMIENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN //
 CREATE PROCEDURE MOVIMIENTOS_LEER_SUMA_EMPRESA_MONEDA_FIN ( IN EmpresaID INTEGER, IN Moneda TEXT, IN Fin DATE)
 BEGIN
-    SELECT  SUM(M.Monto) AS Monto
+    SELECT  ISNULL(SUM(M.Monto), 0) AS Monto
     FROM    Movimientos AS M
     WHERE   M.EmpresaID = EmpresaID
             AND M.Moneda = Moneda
-            AND M.Fecha < Fin;
+            AND M.Fecha <= Fin;
 END //

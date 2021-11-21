@@ -14,13 +14,13 @@ Aplicación Web que permitirá administrar una cartera de descuento de facturas/
 
 ## Programadores ✒️
 
-* **U201810780** - Renzo Diaz - [RenzoDD2001](https://github.com/RenzoDD2001)
-* **U201912722** - Alvaro Cabrera - [Alvaro24mrz](https://github.com/Alvaro24mrz)
-* **U201911485** - Natalia Villanueva - [Natalia020302](https://github.com/Natalia020302)
-* **U201914540** - Flavia Pardo - [Pardito123](https://github.com/Pardito123)
-* **U201911572** - Manuel Aranguri - [Nwyr-34](https://github.com/Nwyr-34)
-* **U201915358** - Kelly Huamani - [KellyHT](https://github.com/KellyHT)
-* **U20181C600** - Debie García - [debiegarcia](https://github.com/debiegarcia)
+* **U201810780** - Renzo Diaz - [RenzoDD](https://github.com/RenzoDD) - BackEnd
+* **U201912722** - Alvaro Cabrera - [Alvaro24mrz](https://github.com/Alvaro24mrz) - BackEnd
+* **U201911485** - Natalia Villanueva - [Natalia020302](https://github.com/Natalia020302) - BackEnd
+* **U201914540** - Flavia Pardo - [Pardito123](https://github.com/Pardito123) - FrontEnd
+* **U201911572** - Manuel Aranguri - [Nwyr-34](https://github.com/Nwyr-34) - BackEnd
+* **U201915358** - Kelly Huamani - [KellyHT](https://github.com/KellyHT) - FrontEnd
+* **U20181C600** - Debie García - [debiegarcia](https://github.com/debiegarcia) - FrontEnd
 
 ## Agradecimientos 🎁
 
