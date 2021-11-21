@@ -40,7 +40,7 @@
 				</div>
 			</div>
 
-			<h1 class="text-center">Estado de cuenta corriente MN</h1>
+			<h1 class="text-center">Estado de cuenta corriente</h1>
 			<div class="row">
 				<div class="col-6" style="margin-bottom: 2%;">
 					<input type="date" name="fechaInicio" class="form-control" value="<?php echo $fechaInicio ?>" onchange="this.form.submit()">
@@ -75,9 +75,8 @@
 						<?php foreach ($documentosGeneral as $m) :	?>
 
 							<tr>
-								<th scope="row"><?php echo $documentosGeneral->FechaEmision ?></th>
-								<td><?php echo $m->Fecha ?></td>
-								<td><?php echo $m->Detalle ?></td>
+								<td><?php echo isset($m->Fecha)? $m->Fecha : $m->FechaEmision ?></td>
+								<td><?php echo isset($m->Detalle) ? $m->Detalle : "Movimiento" ?></td>
 								<td><?php echo $m->Moneda ?></td>
 								<?php if($m->Monto > 0): ?>
 								<td>-</td>

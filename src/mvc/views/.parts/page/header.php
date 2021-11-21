@@ -8,37 +8,39 @@
         </button>
             <div class="collapse navbar-collapse text-center" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/comitentes">
-                            <i class="bi bi-arrow-left-right"></i> Movimiento de Comitentes
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/movimientos">
-                            <i class="bi bi-journal-text"></i></i> Estado de Cuenta Corriente
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/cartera">
-                            <i class="bi bi-wallet2"></i> Cartera
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/financiar">
-                            <i class="bi bi-percent"></i> Financiar
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/login">
-                            <i class="bi bi-power"></i> 
-                            <?php 
-                                if (isset($_SESSION["EmpresaID"]))
-                                    echo "Salir";
-                                else
-                                    echo "Entrar";
-                            ?>
-                        </a>
-                    </li>
+                    <?php if (isset($_SESSION["EmpresaID"])) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/comitentes">
+                                <i class="bi bi-arrow-left-right"></i> Movimiento de Comitentes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/movimientos">
+                                <i class="bi bi-journal-text"></i></i> Estado de Cuenta Corriente
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/cartera">
+                                <i class="bi bi-wallet2"></i> Cartera
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/financiar">
+                                <i class="bi bi-percent"></i> Financiar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/login">
+                                <i class="bi bi-power"></i> Salir
+                            </a>
+                        </li>
+                    <?php else : ?>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/login">
+                                <i class="bi bi-power"></i> Entrar
+                            </a>
+                        </li>
+                    <?php endif ?>
                 </ul>
             </div>
         </div>

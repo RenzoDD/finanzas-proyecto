@@ -30,6 +30,8 @@
                     </h4>
 					<br><br>
 					</div>
+					
+                    <?php if (!isset($_SESSION["EmpresaID"])) : ?>
 					<div class=" mb-3">
 							<a class="btn btn-success" href="/login">
 								Ir al login
@@ -38,6 +40,7 @@
 								Registrarse
 							</a>
 					</div>
+					<?php endif ?>
 				</div>
 
 				<div class="col-6 col-md-4">

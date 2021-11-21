@@ -20,7 +20,7 @@
 		<form>
 			<div class="row">
 				<div class="col">
-					<p>Tipo cambio: 4.1 </p>
+					<p>Tipo cambio: <?php echo CAMBIO ?> </p>
 				</div>				
 			</div>
 		</form>
@@ -50,8 +50,8 @@
 						<td><?php echo $doc->TipoDocumento ?></td>
 						<td><?php echo $doc->Emisor?></td>
 						<td><?php echo $doc->EnFinanciamiento?></td>
-						<td><?php echo $doc->Monto > 0?$doc->Monto:"" ?></td>
-						<td><?php echo $doc->Monto > 0?(($doc->Monto)/4.1):"" ?></td>
+						<td><?php echo $doc->Monto ?></td>
+						<td><?php echo $doc->Monto/CAMBIO ?></td>
 					</tr>
 					<?php endforeach?>
 				</tbody>
@@ -83,8 +83,8 @@
 						<td><?php echo $doc->TipoDocumento ?></td>
 						<td><?php echo $doc->Emisor?></td>
 						<td><?php echo $doc->EnFinanciamiento?></td>
-						<td><?php echo $doc->Monto > 0?(($doc->Monto)*4.1):"" ?></td>
-						<td><?php echo $doc->Monto > 0?$doc->Monto:"" ?></td>
+						<td><?php echo ($doc->Monto)*CAMBIO?></td>
+						<td><?php echo $doc->Monto ?></td>
 					</tr>
 					<?php endforeach?>
 				</tbody>
