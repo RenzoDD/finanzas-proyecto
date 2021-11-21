@@ -23,15 +23,10 @@
 			<div class="row justify-content-md-center">
 				<div class="col-md-8 ">
 					<div class="mb-3">
-						<h1 ">¡Bienvenido a FinSmart</h1>
+						<h1>¡Bienvenido a FinSmart</h1>
                     <br><br>
-                    <h4 >¡Bienvenido a FinSmart!
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore 
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                        exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-                        consequat. Duis aute irure dolor in reprehenderit.
-                        
+                    <h4>
+						FinSmart es una aplicación que tiene el objetivo de ayudar a las empresas a guardar un registro de sus documentos financieros. Podrás ver los movimientos financieros que se realizaron, la cartera de documentos, y hacer el cálculo de la TCEA de los documentos que elija y según los parámetros que ingrese. 
                     </h4>
 					</div>
 					<div class=" mb-3">
